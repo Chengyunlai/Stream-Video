@@ -1,0 +1,4 @@
+video:
+  path: "/home/qvod/"
+server:
+  port: 8888
