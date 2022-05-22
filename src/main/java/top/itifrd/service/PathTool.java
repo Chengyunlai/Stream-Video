@@ -53,44 +53,49 @@ public class PathTool {
 
         // 判断
         for (String fileName : fileNames) {
-
             // 处理只需要后缀名前面的时间内容
-            String resFileName = fileName.substring(0, fileName.lastIndexOf("."));
-            log.info("文件内容:" + resFileName);
+            log.info("文件名是:" + fileName);
+            if (fileName.length() == 23){
+                String resFileName = fileName.substring(0, fileName.lastIndexOf(".mp4"));
+                log.info("时间日期是:" + resFileName);
 
-            // 找一个小于结束时间，大于开始时间的节点
-            if (resFileName.compareTo(st) > 0){
-                if(startTime == null){
-                    startIndex = index;
-                    startTime = resFileName;
+                // 找一个小于结束时间，大于开始时间的节点
+                if (resFileName.compareTo(st) > 0){
+                    if(startTime == null){
+                        startIndex = index;
+                        startTime = resFileName;
+                    }
                 }
-            }
-            if (resFileName.compareTo(et) < 0){
+                if (resFileName.compareTo(et) < 0){
                     endIndex = index;
                     endTime = resFileName;
+                }
+                index++;
             }
-            index++;
         }
-        System.out.println("--");
-        log.info("startTime" + startTime);
-        log.info("endTime" + endTime);
-        log.info("文件开始索引" + startIndex);
+        log.info("startTime:" + startTime);
+        log.info("endTime:" + endTime);
+        log.info("文件开始索引:" + startIndex);
         log.info("文件结束索引" + endIndex);
 
         log.info("requirements.txt输出路径:" + path);
         // Java自定义的换行符
         String newLine = System.getProperty("line.separator");
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path + "requirements.txt"));
-        for (int i = startIndex; i <= endIndex; i++) {
-            log.info("正在写入=====>>" + fileNames[i]);
-            bos.write(fileNames[i].getBytes());
+        for (int i = startIndex+1; i <= endIndex; i++) {
+            String txt = "file '"+path+"501/"+fileNames[i]+"'";
+            log.info("正在写入=====>>" + txt);
+            bos.write(txt.getBytes());
             bos.write(newLine.getBytes());
         }
-        log.info("写入完成");
+        log.info("requirements.txt,写入完成");
         bos.close();
         // dos命令执行
         try {
-            Runtime.getRuntime().exec("ffmpeg -f concat -safe 0 -i "+ path + "requirements.txt"+" -c copy "+ path + "result.mp4");
+            log.info("开始执行命令行");
+            String command = "ffmpeg -f concat -safe 0 -i "+ path + "requirements.txt"+" -c copy "+ path + "result/result.mp4";
+            log.info("执行的命令是:" + command);
+            Runtime.getRuntime().exec(command);
             String data = "http://172.18.45.106";
             r.setData(data);
             r.setFlag(true);
