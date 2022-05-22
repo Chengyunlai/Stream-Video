@@ -35,7 +35,9 @@ public class PathTool {
     String endTime = null;
     // 返回值
     R r = new R();
+    String[] doneFileNames = null;
     public R getFileName(String id,String st, String et) throws IOException {
+        int done_index = 0;
         log.info("读到父类路径是:" + path);
         // 拼接具体摄像头的路径
         String filePath = path;
@@ -82,7 +84,9 @@ public class PathTool {
         // Java自定义的换行符
         String newLine = System.getProperty("line.separator");
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path + "requirements.txt"));
+        doneFileNames = new String[endIndex-startIndex];
         for (int i = startIndex+1; i <= endIndex; i++) {
+            doneFileNames[done_index++] = fileNames[i];
             String txt = "file '"+path+"501/"+fileNames[i]+"'";
             log.info("正在写入=====>>" + txt);
             bos.write(txt.getBytes());
@@ -96,10 +100,10 @@ public class PathTool {
             String command = "ffmpeg -f concat -safe 0 -i "+ path + "requirements.txt"+" -c copy "+ path + "result/result.mp4";
             log.info("执行的命令是:" + command);
             Runtime.getRuntime().exec(command);
-            String data = "http://172.18.45.106";
+            String data = "http://172.18.45.106:8888/result/result.mp4";
             r.setData(data);
             r.setFlag(true);
-            r.setTotalFilesName(fileNames);
+            r.setTotalFilesName(doneFileNames);
         }catch (Exception e){
             e.printStackTrace();
         }
