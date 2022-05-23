@@ -24,19 +24,20 @@ public class PathTool {
     // 定义要读取的路径
     @Value("${video.path}")
     private String path;
-    int index = 0;
-    // 开始的索引
-    int startIndex = 0;
-    // 结束的索引
-    int endIndex = 0;
-    // 开始的文件名
-    String startTime = null;
-    // 结束的文件名
-    String endTime = null;
-    // 返回值
-    R r = new R();
-    String[] doneFileNames = null;
+
     public R getFileName(String id,String st, String et) throws IOException {
+        int index = 0;
+        // 开始的索引
+        int startIndex = 0;
+        // 结束的索引
+        int endIndex = 0;
+        // 开始的文件名
+        String startTime = null;
+        // 结束的文件名
+        String endTime = null;
+        // 返回值
+        R r = new R();
+        String[] doneFileNames = null;
         int done_index = 0;
         log.info("读到父类路径是:" + path);
         // 拼接具体摄像头的路径
@@ -56,10 +57,10 @@ public class PathTool {
         // 判断
         for (String fileName : fileNames) {
             // 处理只需要后缀名前面的时间内容
-            log.info("文件名是:" + fileName);
+            // log.info("文件名是:" + fileName);
             if (fileName.length() == 23){
                 String resFileName = fileName.substring(0, fileName.lastIndexOf(".mp4"));
-                log.info("时间日期是:" + resFileName);
+                // log.info("时间日期是:" + resFileName);
 
                 // 找一个小于结束时间，大于开始时间的节点
                 if (resFileName.compareTo(st) > 0){
