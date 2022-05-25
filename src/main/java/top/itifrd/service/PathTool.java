@@ -75,6 +75,7 @@ public class PathTool {
                 }
                 index++;
             }
+
         }
         log.info("startTime:" + startTime);
         log.info("endTime:" + endTime);
@@ -87,21 +88,23 @@ public class PathTool {
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path + "requirements.txt"));
         doneFileNames = new String[endIndex-startIndex];
         for (int i = startIndex+1; i <= endIndex; i++) {
-            doneFileNames[done_index++] = fileNames[i];
-            String txt = "file '"+path+"501/"+fileNames[i]+"'";
-            log.info("正在写入=====>>" + txt);
-            bos.write(txt.getBytes());
-            bos.write(newLine.getBytes());
+            if(fileNames[i].length() == 23){
+                doneFileNames[done_index++] = fileNames[i];
+                String txt = "file '"+path+"501/"+fileNames[i]+"'";
+                log.info("正在写入=====>>" + txt);
+                bos.write(txt.getBytes());
+                bos.write(newLine.getBytes());
+            }
         }
         log.info("requirements.txt,写入完成");
         bos.close();
         // dos命令执行
         try {
             log.info("开始执行命令行");
-            String command = "ffmpeg -f concat -safe 0 -i "+ path + "requirements.txt"+" -c copy "+ path + "result/result.mp4";
+            String command = "ffmpeg -f concat -safe 0 -i "+ path + "requirements.txt"+" -c copy "+ path + "result/result.mp4 -y";
             log.info("执行的命令是:" + command);
             Runtime.getRuntime().exec(command);
-            String data = "http://172.18.45.106:8888/result/result.mp4";
+            String data = "http://172.18.45.106:8889/result/result.mp4";
             r.setData(data);
             r.setFlag(true);
             r.setTotalFilesName(doneFileNames);

@@ -12,7 +12,7 @@ public class PathToolTest {
     PathTool tool;
     @Test
     public void getFileName() {
-        String startTime = "2022-05-20-21-06-16.mp4";
+        String startTime = "2022-05-25-15-53-28.mp4";
         String endTime = "2022-05-20-19-55";
         System.out.println("测试的开始时间:" + startTime);
         System.out.println("测试的结束时间:" + endTime);
